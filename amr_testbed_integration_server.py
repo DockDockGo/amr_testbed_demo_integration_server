@@ -1,14 +1,9 @@
-from flask import Flask, request, jsonify
+from flask import Flask, jsonify, request
 
-from .testbed_config import (
-    WorkCell,
-    AMR,
-    TaskStatus,
-    SENTINEL_DOCK_ID,
-    REST_API_BASE_URL,
-    parse_amr_resource_name_to_enum,
-    parse_location_name_to_enum,
-)
+from testbed_config import (AMR, AMR_OFFBOARD_INFRA_REST_API_BASE_URL, PORT,
+                            SENTINEL_DOCK_ID, TaskStatus, WorkCell,
+                            parse_amr_resource_name_to_enum,
+                            parse_location_name_to_enum)
 
 active_missions = {
     AMR.AMR_1: None,
@@ -20,6 +15,7 @@ app = Flask(__name__)
 
 
 ########### Helper functions ###########
+
 
 # REST API call to AMR offboard infrastructure (backend) to create a new AMR mission
 def create_new_amr_mission(amr, goal):
@@ -36,7 +32,7 @@ def create_new_amr_mission(amr, goal):
         "end_time": None,
     }
 
-    url = f"{AMR_OFFBOARD_INFRA_REST_API_BASE_URL}/amrmissions/"
+    url = f"{AMR_OFFBOARD_INFRA_AMR_OFFBOARD_INFRA_REST_API_BASE_URL}/amrmissions/"
     headers = {"Content-Type": "application/json"}
 
     response = requests.post(url, data=json.dumps(data), headers=headers)
@@ -136,6 +132,5 @@ def forward_mission_completion():
     self.active_missions[amr] = None
 
 
-# driver function
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=PORT, debug=True)

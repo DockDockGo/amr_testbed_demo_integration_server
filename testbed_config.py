@@ -1,6 +1,9 @@
 from enum import Enum
 
 SENTINEL_DOCK_ID = 0
+
+# Port that the flask server should use
+PORT = 8889
  
 # This is the base URL of the AMR offboard infrastructure (backend) REST API
 AMR_OFFBOARD_INFRA_REST_API_BASE_URL = "http://192.168.0.46:8000"
@@ -41,7 +44,7 @@ parse_location_name_to_enum = {
     "Depot": WorkCell.DEPOT,
 }
 
-parse_amr_resource_name_to_enum: {
+parse_amr_resource_name_to_enum = {
     "amr1": AMR.AMR_1,
     "amr2": AMR.AMR_2,
 }
