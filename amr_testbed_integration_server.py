@@ -90,7 +90,7 @@ def generate_mission_completion_payload(amr):
 #     "structureType": “Heart",
 #     "location": "Robot-Arm-2"
 # }
-@app.route("/enqueue_new_mission", methods=["POST"])
+@app.route("/execution", methods=["POST"])
 def enqueue_new_amr_mission():
     # Get the mission from the executor
     potential_mission = request.get_json()
