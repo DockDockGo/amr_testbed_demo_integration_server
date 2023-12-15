@@ -1,3 +1,8 @@
+import datetime
+import json
+import time
+
+import requests
 from flask import Flask, jsonify, request
 
 from testbed_config import (AMR, AMR_OFFBOARD_INFRA_REST_API_BASE_URL, PORT,
@@ -32,7 +37,7 @@ def create_new_amr_mission(amr, goal):
         "end_time": None,
     }
 
-    url = f"{AMR_OFFBOARD_INFRA_AMR_OFFBOARD_INFRA_REST_API_BASE_URL}/amrmissions/"
+    url = f"{AMR_OFFBOARD_INFRA_REST_API_BASE_URL}/amrmissions/"
     headers = {"Content-Type": "application/json"}
 
     response = requests.post(url, data=json.dumps(data), headers=headers)
@@ -64,8 +69,8 @@ def parse_mission_request(mission):
 def generate_mission_completion_payload(amr):
     return {
         "msgType": "EndTask",
-        "taskId": self.active_missions[amr],
-        "name": self.active_missions[amr],
+        "taskId": active_missions[amr],
+        "name": active_missions[amr],
         "outcome": "success",
     }
 
@@ -93,10 +98,12 @@ def enqueue_new_amr_mission():
 
     if mission_to_enqueue is not None:
         create_new_amr_mission(mission_to_enqueue["amr"], mission_to_enqueue["goal"])
-        self.active_missions[mission_to_enqueue["amr"]] = potential_mission
+        active_missions[mission_to_enqueue["amr"]] = potential_mission
         print(
             f"{mission_to_enqueue['amr'].name} assigned a mission to go to {mission_to_enqueue['goal'].name}:\n {potential_mission}"
         )
+    response_data = {'message': 'AMR mission created.'}
+    return jsonify(response_data), 201
 
 
 # Is called by the ROS offboard comms node to signal mission completion.
@@ -129,7 +136,10 @@ def forward_mission_completion():
     # TODO[Shobhit/Zack]: It would be good style for the server to repond with acknowledgement of the mission completion
 
     # Set amr's active mission to None
-    self.active_missions[amr] = None
+    active_missions[amr] = None
+
+    response_data = {'message': 'Forwarded mission completion signal to executor.'}
+    return jsonify(response_data), 200
 
 
 if __name__ == "__main__":
