@@ -122,8 +122,8 @@ def enqueue_new_amr_mission():
 @app.route("/forward_mission_completion", methods=["POST"])
 def forward_mission_completion():
     mission_completion_info = request.get_json()
-    amr = mission_completion_info["amr"]
-    print(f"{amr.name} has completed its mission.")
+    amr_val = mission_completion_info["amr_val"]
+    print(f"{AMR(amr_val).name} has completed its mission.")
     executor_payload = generate_mission_completion_payload(
         mission_completion_info["amr"]
     )
