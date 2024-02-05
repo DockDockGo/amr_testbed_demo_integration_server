@@ -6,10 +6,10 @@ SENTINEL_DOCK_ID = 0
 PORT = 8889
  
 # This is the base URL of the AMR offboard infrastructure (backend) REST API
-AMR_OFFBOARD_INFRA_REST_API_BASE_URL = "http://192.168.0.46:8000"
+AMR_OFFBOARD_INFRA_REST_API_BASE_URL = "http://192.168.1.2:8000"
 
 # This is the URL to the executor server that sends tasks requests and accepts task completion responses
-TESTBED_EXECUTOR_SERVER_URL = ""
+TESTBED_EXECUTOR_SERVER_URL = "http://localhost:9091"
 
 # A work cell is a physical location in the factory where a robot can be assigned to perform a task
 class WorkCell(Enum):
